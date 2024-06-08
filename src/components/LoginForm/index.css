@@ -1,0 +1,42 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo {
+  width: 70%;
+  margin: 10px;
+}
+.input-container {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.text-input-element {
+  border-color: #94a3b8;
+  padding: 4px;
+  color: #94a3b8;
+  outline: none;
+  border-radius: 6px;
+}
+.checkbox-input-container {
+  align-self: flex-start;
+  margin: 10px;
+}
+.checkbox-label-element {
+  cursor: pointer;
+}
+.submit-btn {
+  width: 100%;
+  background-color: #4696e5;
+  color: white;
+  border: none;
+  padding: 7px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.error-message {
+  color: red;
+  font-size: 10px;
+}
