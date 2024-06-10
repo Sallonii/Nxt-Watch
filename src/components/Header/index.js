@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 import {withRouter} from 'react-router-dom'
 
-import {FaMoon, FaRegUserCircle} from 'react-icons/fa'
+import {FaMoon} from 'react-icons/fa'
 
 import {
   IoReorderThreeOutline,
@@ -85,8 +85,12 @@ const Header = props => (
                 <FaMoon onClick={changeTheme} />
               )}
             </ReactIcon>
-            <ReactIcon type="button" isDarkTheme={isDarkTheme}>
-              <FaRegUserCircle />
+            <ReactIcon type="button">
+              <img
+                alt="profile"
+                className="profile-logo"
+                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
+              />
             </ReactIcon>
             <LogoutButton
               type="button"

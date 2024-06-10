@@ -9,6 +9,10 @@
   align-items: center;
 }
 
+.profile-logo {
+  height: 37px;
+}
+
 @media screen and (min-width: 768px) {
   .header-elements-container {
     width: 30%;
