@@ -1,0 +1,32 @@
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+.failure-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+.failure-image {
+  height: 200px;
+  width: 250px;
+}
+.retry-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 10px;
+  cursor: pointer;
+}
+.video-ul-container {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}

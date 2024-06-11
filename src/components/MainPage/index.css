@@ -9,23 +9,14 @@
 }
 .tabs-container {
   width: 100%;
-  padding: 0;
+  padding: 2px;
 }
 .sidebar-bottom-container {
   margin-left: 10px;
 }
-.contact-us-heading {
-  color: #031f44;
-  font-size: 17px;
-  margin-bottom: 30px;
-}
 .social-media-logo {
   height: 40px;
   margin-right: 10px;
-}
-.contact-us-section-text {
-  color: #031f44;
-  font-weight: 600;
 }
 .main-container {
   display: flex;

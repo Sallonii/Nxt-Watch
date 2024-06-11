@@ -3,7 +3,7 @@ import {Switch, Route} from 'react-router-dom'
 import './App.css'
 
 import LoginForm from './components/LoginForm'
-import Home from './components/Home'
+import MainPage from './components/MainPage'
 
 import ThemeContext from './context/ThemeContext'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -27,7 +27,7 @@ class App extends Component {
       >
         <Switch>
           <Route exact path="/login" component={LoginForm} />
-          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/" component={MainPage} />
         </Switch>
       </ThemeContext.Provider>
     )

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const HeaderMainContainer = styled.div`
   height: 10vh;
-  background-color: ${props => (props.isDarkTheme ? 'black' : 'white')};
+  background-color: ${props => (props.isDarkTheme ? '#231f20' : 'white')};
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
@@ -12,7 +12,7 @@ export const HeaderMainContainer = styled.div`
 export const ReactIcon = styled.button`
   font-size: 25px;
   cursor: pointer;
-  color: ${props => (props.isDarkTheme ? 'white' : 'black')};
+  color: ${props => (props.isDarkTheme ? 'white' : '#231f20')};
   background-color: transparent;
   border: none;
 `
