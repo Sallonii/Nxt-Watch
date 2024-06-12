@@ -1,0 +1,14 @@
+.tabs-container {
+  width: 100%;
+  padding: 2px;
+}
+.sidebar-bottom-container {
+  margin-left: 10px;
+}
+.social-media-logo {
+  height: 40px;
+  margin-right: 10px;
+}
+.main-container {
+  display: flex;
+}

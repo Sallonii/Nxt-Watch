@@ -4,7 +4,7 @@
   align-items: center;
   height: 50vh;
 }
-.failure-container {
+.new-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,4 +29,14 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.hidden-scrollbar {
+  overflow: auto;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -32,9 +32,18 @@ class HomePage extends Component {
     videosList: [],
     displayBanner: true,
     videosStatus: apiConstants.initial,
+    searchValue: '',
   }
 
   componentDidMount() {
+    this.getVideos()
+  }
+
+  onChangingSearchInput = event => {
+    this.setState({searchValue: event.target.value})
+  }
+
+  onClickingSearch = () => {
     this.getVideos()
   }
 
@@ -58,6 +67,7 @@ class HomePage extends Component {
   }
 
   getVideos = async () => {
+    const {searchValue} = this.state
     this.setState({videosStatus: apiConstants.inProgress})
     const jwtToken = Cookies.get('jwt_token')
     const options = {
@@ -67,7 +77,7 @@ class HomePage extends Component {
       },
     }
 
-    const api = `https://apis.ccbp.in/videos/all?search=`
+    const api = `https://apis.ccbp.in/videos/all?search=${searchValue}`
 
     const response = await fetch(api, options)
     const data = await response.json()
@@ -99,10 +109,41 @@ class HomePage extends Component {
     </div>
   )
 
+  emptyListView = () => (
+    <ThemeContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+
+        return (
+          <div className="new-container">
+            <img
+              alt="no videos"
+              className="failure-image"
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+            />
+            <FailureHeading isDarkTheme={isDarkTheme}>
+              No Search results found
+            </FailureHeading>
+            <FailurePara isDarkTheme={isDarkTheme}>
+              Try different key words or remove search filter
+            </FailurePara>
+            <button type="button" className="retry-btn" onClick={this.retry}>
+              Retry
+            </button>
+          </div>
+        )
+      }}
+    </ThemeContext.Consumer>
+  )
+
   renderVideosList = () => {
     const {videosList} = this.state
+
+    if (videosList.length === 0) {
+      return this.emptyListView()
+    }
     return (
-      <ul className="video-ul-container">
+      <ul className="video-ul-container hidden-scrollbar">
         {videosList.map(eachVideo => (
           <VideoItem videoDetails={eachVideo} key={eachVideo.id} />
         ))}
@@ -126,7 +167,7 @@ class HomePage extends Component {
         const {isDarkTheme} = value
 
         return (
-          <div className="failure-container">
+          <div className="new-container">
             {isDarkTheme ? (
               <img
                 alt="failure"
@@ -182,8 +223,15 @@ class HomePage extends Component {
             <MainContainer isDarkTheme={isDarkTheme}>
               {displayBanner && <>{this.renderPopup()}</>}
               <InputContainer isDarkTheme={isDarkTheme}>
-                <InputElement placeholder="Search" />
-                <InputSearchButton type="button" isDarkTheme={isDarkTheme}>
+                <InputElement
+                  placeholder="Search"
+                  onChange={this.onChangingSearchInput}
+                />
+                <InputSearchButton
+                  type="button"
+                  isDarkTheme={isDarkTheme}
+                  onClick={this.onClickingSearch}
+                >
                   <MdSearch />
                 </InputSearchButton>
               </InputContainer>

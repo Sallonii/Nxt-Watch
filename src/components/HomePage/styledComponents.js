@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const MainContainer = styled.div`
   background-color: ${props => (props.isDarkTheme ? 'black' : 'transparent')};
-  width: 70%;
+  width: 80%;
   @media screen and (max-width: 767px) {
     width: 100%;
   }
