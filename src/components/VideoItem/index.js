@@ -32,7 +32,7 @@ const VideoItem = props => {
         const {isDarkTheme} = value
 
         return (
-          <Link to={`/videos/${id}`}>
+          <Link to={`/videos/${id}`} className="nav-item">
             <VideoListContainer>
               <ThumbNail alt="video thumbnail" src={thumbnailUrl} />
               <div className="video-description">

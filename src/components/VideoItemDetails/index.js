@@ -1,9 +1,32 @@
 import {Component} from 'react'
 
+import ReactPlayer from 'react-player'
+
+import {AiOutlineLike} from 'react-icons/ai'
+import {BiDislike} from 'react-icons/bi'
+import {RiPlayListAddFill} from 'react-icons/ri'
+
 import Cookies from 'js-cookie'
+import {formatDistanceToNow} from 'date-fns'
 
 import Header from '../Header'
 import TabContainer from '../TabContainer'
+
+import ThemeContext from '../../context/ThemeContext'
+
+import './index.css'
+
+import {
+  VideoContainer,
+  Title,
+  ViewsAndTime,
+  IconContainer,
+  Button,
+  Icon,
+  ButtonText,
+  Subscribers,
+  Description,
+} from './styledComponents'
 
 const apiConstants = {
   initial: 'INITIAL',
@@ -13,7 +36,10 @@ const apiConstants = {
 }
 
 class VideoItemDetails extends Component {
-  state = {videoDetails: {}, videoStatus: apiConstants.initial}
+  state = {
+    videoDetails: {},
+    videoStatus: apiConstants.initial,
+  }
 
   componentDidMount() {
     this.getVideoDetails()
@@ -58,7 +84,70 @@ class VideoItemDetails extends Component {
     }
   }
 
-  renderVideoDetails = () => <p>Yes</p>
+  renderVideoDetails = () => (
+    <ThemeContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+        const {videoDetails} = this.state
+        const {
+          videoUrl,
+          title,
+          publishedAt,
+          viewCount,
+          profileImageUrl,
+          channelName,
+          subscriberCount,
+          description,
+        } = videoDetails
+        const year = formatDistanceToNow(new Date(publishedAt)).split(' ')[1]
+
+        return (
+          <VideoContainer isDarkTheme={isDarkTheme}>
+            <ReactPlayer url={videoUrl} width="100%" />
+            <Title isDarkTheme={isDarkTheme}>{title}</Title>
+            <div className="view-count-options-container">
+              <ViewsAndTime>{`${viewCount} views . ${year} years ago`}</ViewsAndTime>
+              <IconContainer>
+                <Button type="button">
+                  <Icon>
+                    <AiOutlineLike />
+                  </Icon>
+                  <ButtonText>Like</ButtonText>
+                </Button>
+                <Button type="button">
+                  <Icon>
+                    <BiDislike />
+                  </Icon>
+                  <ButtonText>Dislike</ButtonText>
+                </Button>
+                <Button type="button">
+                  <Icon>
+                    <RiPlayListAddFill />
+                  </Icon>
+                  <ButtonText>Save</ButtonText>
+                </Button>
+              </IconContainer>
+            </div>
+            <hr />
+            <div className="video-details-container-description">
+              <img
+                className="channel-logo"
+                alt="channel logo"
+                src={profileImageUrl}
+              />
+              <div>
+                <Title isDarkTheme={isDarkTheme}>{channelName}</Title>
+                <Subscribers>{`${subscriberCount} subscribers`}</Subscribers>
+                <Description isDarkTheme={isDarkTheme}>
+                  {description}
+                </Description>
+              </div>
+            </div>
+          </VideoContainer>
+        )
+      }}
+    </ThemeContext.Consumer>
+  )
 
   renderVideo = () => {
     const {videoStatus} = this.state

@@ -1,0 +1,21 @@
+.video-player {
+  width: 100%;
+}
+.view-count-options-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  .view-count-options-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+hr {
+  width: 100%;
+}
+.video-details-container-description {
+  display: flex;
+  align-items: center;
+}
