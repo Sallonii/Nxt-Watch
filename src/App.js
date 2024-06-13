@@ -5,11 +5,13 @@ import './App.css'
 import LoginForm from './components/LoginForm'
 import MainPage from './components/MainPage'
 import TrendingPage from './components/TrendingPage'
+import VideoItemDetails from './components/VideoItemDetails'
 
 import ThemeContext from './context/ThemeContext'
 import ActiveTabContext from './context/ActiveTabContext'
+import SavedVideoContext from './context/SavedVideoContext'
+
 import ProtectedRoute from './components/ProtectedRoute'
-import VideoItemDetails from './components/VideoItemDetails'
 
 const tabsList = [
   {
@@ -36,7 +38,12 @@ const tabsList = [
 
 // Replace your code here
 class App extends Component {
-  state = {isDarkTheme: false, activeTabId: tabsList[0].id}
+  state = {
+    isDarkTheme: false,
+    activeTabId: tabsList[0].id,
+    isSaved: false,
+    savedVideoList: [],
+  }
 
   toggleTheme = () => {
     this.setState(prevState => ({isDarkTheme: !prevState.isDarkTheme}))
@@ -46,8 +53,36 @@ class App extends Component {
     this.setState({activeTabId: id})
   }
 
+  addVideosToSaved = videoDetails => {
+    this.setState(prevState => ({
+      savedVideoList: [...prevState.savedVideoList, videoDetails],
+    }))
+  }
+
+  deleteVideosFromSaved = videoDetails => {
+    const {savedVideoList} = this.state
+    const updatedVideoList = savedVideoList.filter(
+      eachVideo => eachVideo.id !== videoDetails.id,
+    )
+    this.setState({savedVideoList: updatedVideoList})
+  }
+
+  updateSavedVideosList = videoDetails => {
+    const {isSaved} = this.state
+    if (isSaved) {
+      this.deleteVideosFromSaved(videoDetails)
+    } else {
+      this.addVideosToSaved(videoDetails)
+    }
+  }
+
+  updateIsSaved = videoDetails => {
+    this.setState(prevState => ({isSaved: !prevState.isSaved}))
+    this.updateSavedVideosList(videoDetails)
+  }
+
   render() {
-    const {isDarkTheme, activeTabId} = this.state
+    const {isDarkTheme, activeTabId, isSaved, savedVideoList} = this.state
     return (
       <ThemeContext.Provider
         value={{
@@ -55,23 +90,33 @@ class App extends Component {
           toggleTheme: this.toggleTheme,
         }}
       >
-        <ActiveTabContext.Provider
+        <SavedVideoContext.Provider
           value={{
-            activeTabId,
-            updateActiveTabId: this.updateActiveTabId,
+            isSaved,
+            savedVideoList,
+            updateIsSaved: this.updateIsSaved,
+            addVideosToSaved: this.addVideosToSaved,
+            deleteVideosFromSaved: this.deleteVideosFromSaved,
           }}
         >
-          <Switch>
-            <Route exact path="/login" component={LoginForm} />
-            <ProtectedRoute exact path="/" component={MainPage} />
-            <ProtectedRoute exact path="/trending" component={TrendingPage} />
-            <ProtectedRoute
-              exact
-              path="/videos/:id"
-              component={VideoItemDetails}
-            />
-          </Switch>
-        </ActiveTabContext.Provider>
+          <ActiveTabContext.Provider
+            value={{
+              activeTabId,
+              updateActiveTabId: this.updateActiveTabId,
+            }}
+          >
+            <Switch>
+              <Route exact path="/login" component={LoginForm} />
+              <ProtectedRoute exact path="/" component={MainPage} />
+              <ProtectedRoute exact path="/trending" component={TrendingPage} />
+              <ProtectedRoute
+                exact
+                path="/videos/:id"
+                component={VideoItemDetails}
+              />
+            </Switch>
+          </ActiveTabContext.Provider>
+        </SavedVideoContext.Provider>
       </ThemeContext.Provider>
     )
   }

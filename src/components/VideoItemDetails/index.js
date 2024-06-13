@@ -13,6 +13,7 @@ import Header from '../Header'
 import TabContainer from '../TabContainer'
 
 import ThemeContext from '../../context/ThemeContext'
+import SavedVideoContext from '../../context/SavedVideoContext'
 
 import './index.css'
 
@@ -39,6 +40,8 @@ class VideoItemDetails extends Component {
   state = {
     videoDetails: {},
     videoStatus: apiConstants.initial,
+    isLiked: '',
+    isDisliked: '',
   }
 
   componentDidMount() {
@@ -84,12 +87,35 @@ class VideoItemDetails extends Component {
     }
   }
 
+  onClickingLike = () => {
+    const {isLiked} = this.state
+    if (isLiked === '') {
+      this.setState({isLiked: true})
+    } else if (isLiked) {
+      this.setState({isLiked: false})
+    } else {
+      this.setState({isLiked: true, isDisliked: false})
+    }
+  }
+
+  onClickingDisLike = () => {
+    const {isDisliked} = this.state
+    if (isDisliked === '') {
+      this.setState({isDisliked: true})
+    } else if (isDisliked) {
+      this.setState({isDisliked: false})
+    } else {
+      this.setState({isDisliked: true, isLiked: false})
+    }
+  }
+
   renderVideoDetails = () => (
     <ThemeContext.Consumer>
       {value => {
         const {isDarkTheme} = value
-        const {videoDetails} = this.state
+        const {videoDetails, isLiked, isDisliked} = this.state
         const {
+          id,
           videoUrl,
           title,
           publishedAt,
@@ -102,30 +128,57 @@ class VideoItemDetails extends Component {
         const year = formatDistanceToNow(new Date(publishedAt)).split(' ')[1]
 
         return (
-          <VideoContainer isDarkTheme={isDarkTheme}>
+          <VideoContainer
+            isDarkTheme={isDarkTheme}
+            data-testid="videoItemDetails"
+          >
             <ReactPlayer url={videoUrl} width="100%" />
             <Title isDarkTheme={isDarkTheme}>{title}</Title>
             <div className="view-count-options-container">
               <ViewsAndTime>{`${viewCount} views . ${year} years ago`}</ViewsAndTime>
               <IconContainer>
-                <Button type="button">
+                <Button
+                  type="button"
+                  onClick={this.onClickingLike}
+                  isLiked={isLiked}
+                >
                   <Icon>
                     <AiOutlineLike />
                   </Icon>
                   <ButtonText>Like</ButtonText>
                 </Button>
-                <Button type="button">
+                <Button
+                  type="button"
+                  isLiked={isDisliked}
+                  onClick={this.onClickingDisLike}
+                >
                   <Icon>
                     <BiDislike />
                   </Icon>
                   <ButtonText>Dislike</ButtonText>
                 </Button>
-                <Button type="button">
-                  <Icon>
-                    <RiPlayListAddFill />
-                  </Icon>
-                  <ButtonText>Save</ButtonText>
-                </Button>
+                <SavedVideoContext.Consumer>
+                  {savedContextValue => {
+                    const {
+                      isSaved,
+                      savedVideosList,
+                      updateIsSaved,
+                    } = savedContextValue
+
+                    const onSavingVideo = () => {
+                      updateIsSaved(videoDetails)
+                    }
+
+                    return (
+                      <Button type="button" onClick={onSavingVideo}>
+                        <Icon>
+                          <RiPlayListAddFill />
+                        </Icon>
+                        <ButtonText>Save</ButtonText>
+                      </Button>
+                    )
+                  }}
+                </SavedVideoContext.Consumer>
               </IconContainer>
             </div>
             <hr />

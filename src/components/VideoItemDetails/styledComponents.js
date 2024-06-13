@@ -8,7 +8,7 @@ export const VideoContainer = styled.div`
     width: 100%;
   }
   padding: 10px;
-  background-color: ${props => (props.isDarkTheme ? 'black' : 'transparent')};
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : 'transparent')};
 `
 export const Title = styled.h1`
   font-size: 20px;
@@ -35,7 +35,8 @@ export const Button = styled.button`
   width: 90px;
   margin: 5px;
   cursor: pointer;
-  color: #7e858e;
+  color: ${props =>
+    props.isLiked || props.saveIsActive ? '#3b82f6' : '#7e858e'};
 `
 export const Icon = styled.div`
   font-size: 30px;
