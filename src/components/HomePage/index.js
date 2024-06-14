@@ -10,6 +10,7 @@ import {MdClose, MdSearch} from 'react-icons/md'
 
 import ThemeContext from '../../context/ThemeContext'
 import VideoItem from '../VideoItem'
+import Failure from '../Failure'
 
 import {
   MainContainer,
@@ -161,42 +162,6 @@ class HomePage extends Component {
     this.getVideos()
   }
 
-  renderFailureView = () => (
-    <ThemeContext.Consumer>
-      {value => {
-        const {isDarkTheme} = value
-
-        return (
-          <div className="new-container">
-            {isDarkTheme ? (
-              <img
-                alt="failure"
-                className="failure-image"
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png"
-              />
-            ) : (
-              <img
-                alt="failure"
-                className="failure-image"
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-              />
-            )}
-            <FailureHeading isDarkTheme={isDarkTheme}>
-              Oops! Something Went Wrong
-            </FailureHeading>
-            <FailurePara isDarkTheme={isDarkTheme}>
-              We are having some trouble to complete your request. Please try
-              again.
-            </FailurePara>
-            <button type="button" className="retry-btn" onClick={this.retry}>
-              Retry
-            </button>
-          </div>
-        )
-      }}
-    </ThemeContext.Consumer>
-  )
-
   renderVideos = () => {
     const {videosStatus} = this.state
 
@@ -206,7 +171,7 @@ class HomePage extends Component {
       case apiConstants.inProgress:
         return this.renderLoader()
       case apiConstants.failure:
-        return this.renderFailureView()
+        return <Failure retry={this.retry} />
       default:
         return null
     }

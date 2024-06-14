@@ -2,6 +2,8 @@ import {Component} from 'react'
 
 import ReactPlayer from 'react-player'
 
+import Loader from 'react-loader-spinner'
+
 import {AiOutlineLike} from 'react-icons/ai'
 import {BiDislike} from 'react-icons/bi'
 import {RiPlayListAddFill} from 'react-icons/ri'
@@ -11,6 +13,7 @@ import {formatDistanceToNow} from 'date-fns'
 
 import Header from '../Header'
 import TabContainer from '../TabContainer'
+import Failure from '../Failure'
 
 import ThemeContext from '../../context/ThemeContext'
 import SavedVideoContext from '../../context/SavedVideoContext'
@@ -63,11 +66,12 @@ class VideoItemDetails extends Component {
     }
     this.setState({
       videoDetails: formattedData,
-      videoStatus: apiConstants.success,
+      videoStatus: apiConstants.failure,
     })
   }
 
   getVideoDetails = async () => {
+    this.setState({videoStatus: apiConstants.inProgress})
     const {match} = this.props
     const {params} = match
     const {id} = params
@@ -84,6 +88,8 @@ class VideoItemDetails extends Component {
     const data = await response.json()
     if (response.ok === true) {
       this.onSuccess(data.video_details)
+    } else {
+      this.setState({videoStatus: apiConstants.failure})
     }
   }
 
@@ -202,12 +208,26 @@ class VideoItemDetails extends Component {
     </ThemeContext.Consumer>
   )
 
+  renderLoader = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#3b82f6" height="50" width="50" />
+    </div>
+  )
+
+  retry = () => {
+    this.getVideoDetails()
+  }
+
   renderVideo = () => {
     const {videoStatus} = this.state
 
     switch (videoStatus) {
       case apiConstants.success:
         return this.renderVideoDetails()
+      case apiConstants.inProgress:
+        return this.renderLoader()
+      case apiConstants.failure:
+        return <Failure retry={this.retry} />
       default:
         return null
     }

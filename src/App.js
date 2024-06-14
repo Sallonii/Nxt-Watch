@@ -1,11 +1,12 @@
 import {Component} from 'react'
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, Redirect} from 'react-router-dom'
 import './App.css'
 
 import LoginForm from './components/LoginForm'
 import MainPage from './components/MainPage'
 import TrendingPage from './components/TrendingPage'
 import VideoItemDetails from './components/VideoItemDetails'
+import NotFound from './components/NotFound'
 
 import ThemeContext from './context/ThemeContext'
 import ActiveTabContext from './context/ActiveTabContext'
@@ -114,6 +115,8 @@ class App extends Component {
                 path="/videos/:id"
                 component={VideoItemDetails}
               />
+              <Route path="/not-found" component={NotFound} />
+              <Redirect to="not-found" />
             </Switch>
           </ActiveTabContext.Provider>
         </SavedVideoContext.Provider>
